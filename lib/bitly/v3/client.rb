@@ -57,6 +57,12 @@ module Bitly
         return Bitly::V3::Url.new(self, response['data'])
       end
 
+      def shorten_with_deep_links(opts={})
+        response = get("/user/link_save", :query => opts)
+        # FIXME: we are not returning deeplink information from the response
+        return Bitly::V3::Url.new(self, response['data']['link_save'])
+      end
+
       # Expands either a hash, short url or array of either.
       #
       # Returns the results in the order they were entered
@@ -150,7 +156,7 @@ module Bitly
           raise BitlyTimeout.new("Bitly didn't respond in time", "504")
         end
 
-        if response['status_code'] == 200
+        if response['status_code'] == 200 || response['status_code'] == 304
           return response
         else
           raise BitlyError.new(response['status_txt'], response['status_code'])

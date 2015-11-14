@@ -9,7 +9,7 @@ module Bitly
       def initialize(client, opts={})
         @client = client
         if opts
-          @short_url = opts['url'] || opts['short_url']
+          @short_url = opts['url'] || opts['short_url'] || opts['link']
           @long_url = opts['long_url']
           @user_hash = opts['hash'] || opts['user_hash']
           @global_hash = opts['global_hash']
